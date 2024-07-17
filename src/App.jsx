@@ -5,6 +5,7 @@ import Footer from './Footer';
 import { Route, Routes } from 'react-router-dom';
 import ProductDisplay from './ProductDisplay';
 import NotFound from './NotFound';
+import Cart from './Cart';
 
 
 function App() {
@@ -12,8 +13,7 @@ function App() {
   const savedData = JSON.parse(savedDataString);
   
   const [cart, setCart] = useState(savedData);
-  
-  console.log(cart);
+
   function handleAddToCart(productID, count){
     const old = cart[productID] || 0;
     const newCart = {...cart, [productID] : old + count};
@@ -25,12 +25,14 @@ function App() {
     return previous + cart[current];
   }, 0);
 
+
   return (
     <div className="flex flex-col min-h-screen w-screen">
       <Navibar totalCount={totalOrder}/>
       <div className='grow flex flex-col'>
       <Routes>
         <Route path="/" element={<ItemsDisplay />} />
+        <Route path="/cart" element={<Cart cart={cart}/>} />
         <Route path="/product/:sku" element={<ProductDisplay onAddToCart={handleAddToCart}/>} />
         <Route path="*" element={<NotFound />} />
       </Routes>
