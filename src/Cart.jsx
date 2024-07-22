@@ -3,20 +3,11 @@ import { getProductData } from "./app";
 import Loading from "./Loading";
 import CartList from "./CartList";
 
-function Cart({ initialCart }) {
+function Cart({ initialCart, fun }) {
     const [loading, setLoading] = useState(true);
     const [productList, setProductList] = useState([]);
-    const [cart, setCart] = useState(initialCart);
-
-    function changeCart(id) {
-        const newCart = { ...cart };
-        delete newCart[id];
-
-        setCart(newCart);
-        const cartString = JSON.stringify(newCart);
-        localStorage.setItem("my-cart", cartString);
-    }
-
+    const cart = initialCart;
+    
     useEffect(() => {
         const arr = Object.keys(cart);
         try {
@@ -28,7 +19,7 @@ function Cart({ initialCart }) {
             console.error("Error fetching product data", error);
             setLoading(false);
         }
-    }, [cart]);
+    }, []);
 
     console.log(productList);
     if (loading) {
@@ -61,7 +52,7 @@ function Cart({ initialCart }) {
                     <h2 className="text-xl font-bold">Subtotal</h2>
                 </div>
 
-                <CartList data={productList} item={cart} remove={changeCart} />
+                <CartList data={productList} item={cart} remove={fun} />
 
                 <div className="gap-5 p-3 flex flex-col lg:flex-row justify-between">
                     <div className="flex flex-col lg:flex-row gap-2">

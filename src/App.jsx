@@ -11,7 +11,7 @@ import Cart from './Cart';
 function App() {
   const savedDataString = localStorage.getItem("my-cart") || "{}";
   const savedData = JSON.parse(savedDataString);
-  
+
   const [cart, setCart] = useState(savedData);
 
   function handleAddToCart(productID, count){
@@ -21,10 +21,10 @@ function App() {
     const cartString = JSON.stringify(newCart);
     localStorage.setItem("my-cart", cartString);
   }
+
   function changeCart(id) {
     const newCart = { ...cart };
     delete newCart[id];
-
     setCart(newCart);
     const cartString = JSON.stringify(newCart);
     localStorage.setItem("my-cart", cartString);
@@ -41,7 +41,7 @@ function App() {
       <div className='grow flex flex-col'>
       <Routes>
         <Route path="/" element={<ItemsDisplay />} />
-        <Route path="/cart" element={<Cart initialCart={cart}/>} />
+        <Route path="/cart" element={<Cart initialCart={cart} fun={changeCart}/>} />
         <Route path="/product/:sku" element={<ProductDisplay onAddToCart={handleAddToCart}/>} />
         <Route path="*" element={<NotFound />} />
       </Routes>
