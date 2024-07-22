@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { getProductData } from "./app";
 import Loading from "./Loading";
 import CartList from "./CartList";
@@ -7,7 +7,7 @@ function Cart({ initialCart, fun }) {
     const [loading, setLoading] = useState(true);
     const [productList, setProductList] = useState([]);
     const cart = initialCart;
-    
+
     useEffect(() => {
         const arr = Object.keys(cart);
         try {
@@ -19,29 +19,32 @@ function Cart({ initialCart, fun }) {
             console.error("Error fetching product data", error);
             setLoading(false);
         }
-    }, []);
+    }, [cart]);
 
-    console.log(productList);
+    const total = useMemo(() => {
+        return productList.reduce((acc, product) => {
+            return acc + product.price * cart[product.id];
+        }, 0);
+    }, [productList, cart]);
+
+    const handleRemove = useCallback((id) => {
+        fun(id);
+    }, [fun]);
+
     if (loading) {
         return <Loading />
     }
+
     if (!cart || Object.keys(cart).length === 0) {
         return (
-            <>
             <div className="grow bg-gray-200 px-10 py-8 lg:px-44 w-screen">
-            <div className="bg-white p-10 max-w-screen-lg m-auto">
-                <h1 className="text-center text-sky-400 font-sans text-5xl">No items in the cart</h1>
+                <div className="bg-white p-10 max-w-screen-lg m-auto">
+                    <h1 className="text-center text-sky-400 font-sans text-5xl">No items in the cart</h1>
+                </div>
             </div>
-            </div>
-            </>
         );
     }
 
-    const total = productList.reduce((acc, product) => {
-        return acc + product.price * cart[product.id];
-    }, 0);
-
-    console.log(total);
     return (
         <div className="bg-gray-200 px-10 py-8 lg:px-44 w-screen min-h-screen">
             <div className="bg-white p-10 max-w-screen-lg m-auto">
@@ -52,7 +55,7 @@ function Cart({ initialCart, fun }) {
                     <h2 className="text-xl font-bold">Subtotal</h2>
                 </div>
 
-                <CartList data={productList} item={cart} remove={fun} />
+                <CartList data={productList} item={cart} remove={handleRemove} />
 
                 <div className="gap-5 p-3 flex flex-col lg:flex-row justify-between">
                     <div className="flex flex-col lg:flex-row gap-2">
