@@ -21,6 +21,15 @@ function App() {
     const cartString = JSON.stringify(newCart);
     localStorage.setItem("my-cart", cartString);
   }
+  function changeCart(id) {
+    const newCart = { ...cart };
+    delete newCart[id];
+
+    setCart(newCart);
+    const cartString = JSON.stringify(newCart);
+    localStorage.setItem("my-cart", cartString);
+  }
+
   const totalOrder = Object.keys(cart).reduce(function (previous, current) {
     return previous + cart[current];
   }, 0);
@@ -32,7 +41,7 @@ function App() {
       <div className='grow flex flex-col'>
       <Routes>
         <Route path="/" element={<ItemsDisplay />} />
-        <Route path="/cart" element={<Cart cart={cart}/>} />
+        <Route path="/cart" element={<Cart initialCart={cart}/>} />
         <Route path="/product/:sku" element={<ProductDisplay onAddToCart={handleAddToCart}/>} />
         <Route path="*" element={<NotFound />} />
       </Routes>
