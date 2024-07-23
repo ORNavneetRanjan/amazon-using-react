@@ -6,6 +6,7 @@ import { Route, Routes } from 'react-router-dom';
 import ProductDisplay from './ProductDisplay';
 import NotFound from './NotFound';
 import Cart from './Cart';
+import Login from './Login';
 
 function App() {
   const savedDataString = localStorage.getItem("my-cart") || "{}";
@@ -40,6 +41,7 @@ function App() {
       <Navibar totalCount={totalOrder} />
       <div className='grow flex flex-col'>
         <Routes>
+          <Route path='/login' element={<Login />} />
           <Route path="/" element={<ItemsDisplay />} />
           <Route path="/cart" element={<Cart initialCart={cart} fun={changeCart} />} />
           <Route path="/product/:sku" element={<ProductDisplay onAddToCart={handleAddToCart} />} />
