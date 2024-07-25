@@ -40,6 +40,7 @@ function Login() {
               <input
                 onChange={handleChange}
                 onBlur={handleBlur}
+                
                 value={values.email}
                 type="email"
                 id="email"
@@ -74,8 +75,8 @@ function Login() {
               className="text-sky-500 h-11 w-56 lg:w-72 p-2 text-2xl bg-white rounded-md shadow-md">
                 LOGIN
               </button>
-              <a className="text-white text-left self-end" href="#">Forgot password ?</a>
-              <Link to="/" className="text-blue-800 text-left self-end">New here? SignIn </Link>
+              <Link to="/forgot-pass" className="text-white text-left self-end" href="#">Forgot password ?</Link>
+              <Link to="/signin" className="text-blue-800 text-left self-end">New here? SignIn </Link>
             </span>
           </form>
         </div>

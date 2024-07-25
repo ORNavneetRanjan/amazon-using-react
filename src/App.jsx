@@ -7,6 +7,8 @@ import ProductDisplay from './ProductDisplay';
 import NotFound from './NotFound';
 import Cart from './Cart';
 import Login from './Login';
+import SignIn from './SignIn';
+import ForgotPass from './ForgotPass';
 
 function App() {
   const savedDataString = localStorage.getItem("my-cart") || "{}";
@@ -41,6 +43,8 @@ function App() {
       <Navibar totalCount={totalOrder} />
       <div className='grow flex flex-col'>
         <Routes>
+          <Route path="/forgot-pass" element={<ForgotPass />} />
+          <Route path='/signin' element={<SignIn />} />
           <Route path='/login' element={<Login />} />
           <Route path="/" element={<ItemsDisplay />} />
           <Route path="/cart" element={<Cart initialCart={cart} fun={changeCart} />} />
