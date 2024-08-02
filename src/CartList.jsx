@@ -1,8 +1,7 @@
 import React from "react";
 import SingleItem from "./SingleItem";
 
-function CartList({ data, item, remove }) {
-    console.log(data, item);
+function CartList({ data, item, remove, updateQuantity }) {
     return (
         <>
             {data.map(product => (
@@ -14,6 +13,7 @@ function CartList({ data, item, remove }) {
                     quantity={item[product.id]}
                     id={product.id}
                     fun={remove}
+                    updateQuantity={updateQuantity}
                 />
             ))}
         </>

@@ -17,20 +17,27 @@ function App() {
   const [cart, setCart] = useState(savedData);
 
   const handleAddToCart = useCallback((productID, count) => {
-    const old = cart[productID] || 0;
-    const newCart = { ...cart, [productID]: old + count };
+    const newCart = { ...cart, [productID]: count };
     setCart(newCart);
     const cartString = JSON.stringify(newCart);
     localStorage.setItem("my-cart", cartString);
   }, [cart]);
 
-  const changeCart = useCallback((id) => {
+  const changeCart = useCallback(function(id){
     const newCart = { ...cart };
     delete newCart[id];
     setCart(newCart);
     const cartString = JSON.stringify(newCart);
     localStorage.setItem("my-cart", cartString);
   }, [cart]);
+
+  function updateCart(product_id, product_count) {
+    if (product_count === 0) {
+      changeCart(product_id);
+    } else {
+      handleAddToCart(product_id, product_count);
+    }
+  }
 
   const totalOrder = useMemo(() => {
     return Object.keys(cart).reduce((previous, current) => {
@@ -47,7 +54,7 @@ function App() {
           <Route path='/signin' element={<SignIn />} />
           <Route path='/login' element={<Login />} />
           <Route path="/" element={<ItemsDisplay />} />
-          <Route path="/cart" element={<Cart initialCart={cart} fun={changeCart} />} />
+          <Route path="/cart" element={<Cart initialCart={cart} fun={changeCart} updateCart={updateCart}/>} />
           <Route path="/product/:sku" element={<ProductDisplay onAddToCart={handleAddToCart} />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
