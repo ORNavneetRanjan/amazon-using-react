@@ -31,12 +31,10 @@ function App() {
     localStorage.setItem("my-cart", cartString);
   }, [cart]);
 
-  function updateCart(product_id, product_count) {
-    if (product_count === 0) {
-      changeCart(product_id);
-    } else {
-      handleAddToCart(product_id, product_count);
-    }
+  function updateCart(newCart) {
+    setCart(newCart);
+    const cartString = JSON.stringify(newCart);
+    localStorage.setItem("my-cart", cartString);
   }
 
   const totalOrder = useMemo(() => {
@@ -54,7 +52,7 @@ function App() {
           <Route path='/signin' element={<SignIn />} />
           <Route path='/login' element={<Login />} />
           <Route path="/" element={<ItemsDisplay />} />
-          <Route path="/cart" element={<Cart initialCart={cart} fun={changeCart} updateCart={updateCart}/>} />
+          <Route path="/cart" element={<Cart cart={cart} removeProduct={changeCart} updateCart={updateCart}/>} />
           <Route path="/product/:sku" element={<ProductDisplay onAddToCart={handleAddToCart} />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

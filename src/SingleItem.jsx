@@ -2,14 +2,17 @@ import { useState } from 'react';
 import { TiDelete } from "react-icons/ti";
 
 function SingleItem({ link, title, price, quantity, id, fun, updateQuantity }) {
+    const[newQuantity, setQuantity] = useState(quantity);
     function handleRemove() {
         fun(id);
     }
-    const [newQuantity, setQuantity] = useState(quantity);
-    function handleUpdateCart(event) {
-        setQuantity(event.target.value);
-        updateQuantity(id, parseInt(event.target.value));
+
+    function handleChange(event) {
+        const value = event.target.value ? Number(event.target.value) : 0;
+        setQuantity(value);
+        updateQuantity(id, value); // Pass both ID and the new value
     }
+
 
     return (
         <>
@@ -28,10 +31,11 @@ function SingleItem({ link, title, price, quantity, id, fun, updateQuantity }) {
                     <input
                         type='number'
                         min={0}
-                        onChange={handleUpdateCart}
-                        value={newQuantity}
+                        onChange={handleChange}
+                        value={newQuantity || 1}
                         className="p-2 text-lg border shadow-md w-16"
                     />
+                    
                 </span>
                 <span>
                     <p className='visible lg:invisible'>SubTotal</p>
