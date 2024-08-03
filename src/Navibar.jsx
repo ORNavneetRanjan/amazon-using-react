@@ -1,5 +1,7 @@
 import react from 'react';
 import { Link } from 'react-router-dom';
+import { CgProfile } from "react-icons/cg";
+
 function Navibar({totalCount}){
   return (
     <>
@@ -14,17 +16,21 @@ function Navibar({totalCount}){
           />
           
         </Link>
+        <span className='flex gap-5'>
+          <Link to="/login">
+            <CgProfile className='text-5xl font-thin opacity-80'/>
+          </Link>
+          <Link to="/cart" className='relative'>
 
-        <Link to="/cart" className='relative'>
-          
-            <img
-              className="w-20 h-12 object-scale-down rounded-full"
-              src="https://t3.ftcdn.net/jpg/03/14/85/06/360_F_314850659_2aQLerz30kWj78tqpaGSbzYD6sAUmuDf.jpg"
-              alt="second logo"
-            />
-            <p className='absolute right-0 top-0 text-white bg-sky-500 p-1 rounded-full'>{totalCount}</p>
-          
-        </Link>
+              <img
+                className="w-20 h-12 object-scale-down rounded-full"
+                src="https://t3.ftcdn.net/jpg/03/14/85/06/360_F_314850659_2aQLerz30kWj78tqpaGSbzYD6sAUmuDf.jpg"
+                alt="second logo"
+              />
+              <p className='absolute right-0 top-0 text-white bg-sky-500 p-1 rounded-full'>{totalCount}</p>
+            
+          </Link>
+        </span>
       </div>
       </div>
     </>
