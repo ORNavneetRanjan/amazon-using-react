@@ -17,7 +17,7 @@ function Navibar({totalCount}){
           
         </Link>
         <span className='flex gap-5'>
-          <Link to="/login">
+          <Link to="/profile">
             <CgProfile className='text-5xl font-thin opacity-80'/>
           </Link>
           <Link to="/cart" className='relative'>

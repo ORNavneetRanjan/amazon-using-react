@@ -1,4 +1,4 @@
-import { useField } from "formik";
+
 import React from "react";
 
 function Input({
@@ -6,11 +6,13 @@ function Input({
     name, 
     label, 
     className,
+    value,
+    error,
+    onChange,
+    touched,
+    onBlur,
     ...rest
 }){
-    const [data, meta]= useField(name);
-    const {value, onBlur, onChange } = data;
-    const {error, touched} = meta;
     let borderClass = " border-white";
     if(error && touched){
         borderClass = " border-red-500"
