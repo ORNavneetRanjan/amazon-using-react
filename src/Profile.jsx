@@ -1,11 +1,11 @@
 import React from "react";
-import { withUser } from "./withProvider";
+import { withCart, withUser } from "./withProvider";
 
-function Profile({ user, setUser, setCart }) {
+function Profile({ user, setUser, updateCart }) {
   function handleClick() {
     localStorage.removeItem("token");
     localStorage.removeItem("my-cart");
-    setCart("");
+    updateCart("");
     setUser(undefined);
   }
   return (
@@ -40,4 +40,4 @@ function Profile({ user, setUser, setCart }) {
   );
 }
 
-export default withUser(Profile);
+export default withUser(withCart(Profile));

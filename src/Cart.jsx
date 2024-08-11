@@ -1,84 +1,63 @@
 import React, { useEffect, useState } from "react";
-import { getProductData } from "./app";
+import { getProductsByIds } from "./app";
 import Loading from "./Loading";
 import CartList from "./CartList";
+import { withCart } from "./withProvider";
 
-function Cart({ cart, updateCart, removeProduct }) {
-    const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [isUpdated, setUpdate] = useState(false);
-    const [localCart, setLocalCart] = useState(cart);
-    useEffect(() => {
-        const myProductIds = Object.keys(cart);
-        const myProductPromises = myProductIds.map(id => getProductData(id));
-        Promise.all(myProductPromises).then(products => {
-            setProducts(products);
-            setLoading(false);
-        });
-    }, [cart]); // Now listening to changes in cart
-
-    function handleChange(productId, newValue) {
-        const newCart = { ...localCart, [productId]: +newValue };
-        setLocalCart(newCart);
-        setUpdate(true);
-    }
-
-    function calculateTotal() {
-        return products.reduce((total, product) => {
-            const quantity = cart[product.id] || 0;
-            return total + quantity * product.price;
-        }, 0).toFixed(2); 
-    }
-
-    function onUpdateCart(){
-        updateCart(localCart)
-        setUpdate(false);
-    }
-
-    if (loading) {
-        return <Loading />;
-    }
-
-    if (!cart || Object.keys(cart).length === 0) {
-        return (
-            <div className="grow bg-gray-200 px-10 py-8 lg:px-44 w-screen">
-                <div className="bg-white p-10 max-w-screen-lg m-auto">
-                    <h1 className="text-center text-sky-400 font-sans text-5xl">No items in the cart</h1>
-                </div>
-            </div>
-        );
-    }
-
+function Cart({ cart, updateCart, totalOrder, isUpdated, quantityMap }) {
+  if (!cart || Object.keys(cart).length === 0) {
     return (
-        <div className="bg-gray-200 px-10 py-8 lg:px-44 w-screen min-h-screen">
-            <div className="bg-white p-10 max-w-screen-lg m-auto">
-                <CartList data={products} item={cart} remove={removeProduct} updateQuantity={handleChange} />
-                <div className="gap-5 p-3 flex flex-col lg:flex-row justify-between">
-                    <div className="flex flex-col lg:flex-row gap-2">
-                        <input className="w-60 p-2 border shadow-md text-gray-400 text-xl font-sans" type="text" placeholder="Coupon code" />
-                        <button className="w-60 text-xl bg-sky-400 text-white text-center p-2 rounded-md">APPLY COUPON</button>
-                    </div>
-                    <button 
-                        className={"w-60 text-xl text-white text-center p-2 rounded-md " + (isUpdated ? "bg-sky-500 " : "bg-gray-500")} 
-                        onClick={onUpdateCart}
-                        disabled={!isUpdated}
-                    >
-                        UPDATE CART
-                    </button>
-                </div>
-                <div className="w-full flex flex-row-reverse mt-10">
-                    <div className="w-2/3 lg:w-1/2 self-end border-1 shadow-md gap-5">
-                        <h1 className="font-bold bg-gray-400 text-xl p-2">Cart Total</h1>
-                        <div className="flex flex-col gap-3 p-2">
-                            <h2>Subtotal = ${calculateTotal()}</h2>
-                            <h2>Total = ${calculateTotal()}</h2>
-                        </div>
-                        <button className="w-full text-2xl bg-sky-400 text-white text-center p-2 rounded-md">Proceed To Checkout</button>
-                    </div>
-                </div>
-            </div>
+      <div className="grow bg-gray-200 px-10 py-8 lg:px-44 w-screen">
+        <div className="bg-white p-10 max-w-screen-lg m-auto">
+          <h1 className="text-center text-sky-400 font-sans text-5xl">
+            No items in the cart
+          </h1>
         </div>
+      </div>
     );
+  }
+
+  return (
+    <div className="bg-gray-200 px-10 py-8 lg:px-44 w-screen min-h-screen">
+      <div className="bg-white p-10 max-w-screen-lg m-auto">
+        <CartList />
+        <div className="gap-5 p-3 flex flex-col lg:flex-row justify-between">
+          <div className="flex flex-col lg:flex-row gap-2">
+            <input
+              className="w-60 p-2 border shadow-md text-gray-400 text-xl font-sans"
+              type="text"
+              placeholder="Coupon code"
+            />
+            <button className="w-60 text-xl bg-sky-400 text-white text-center p-2 rounded-md">
+              APPLY COUPON
+            </button>
+          </div>
+          <button
+            className={
+              "w-60 text-xl text-white text-center p-2 rounded-md " +
+              (isUpdated ? "bg-sky-500 " : "bg-gray-500")
+            }
+            onClick={() => updateCart(quantityMap)}
+            disabled={!isUpdated}
+          >
+            UPDATE CART
+          </button>
+        </div>
+        <div className="w-full flex flex-row-reverse mt-10">
+          <div className="w-2/3 lg:w-1/2 self-end border-1 shadow-md gap-5">
+            <h1 className="font-bold bg-gray-400 text-xl p-2">Cart Total</h1>
+            <div className="flex flex-col gap-3 p-2">
+              <h2>Subtotal = ${totalOrder}</h2>
+              <h2>Total = ${totalOrder}</h2>
+            </div>
+            <button className="w-full text-2xl bg-sky-400 text-white text-center p-2 rounded-md">
+              Proceed To Checkout
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
 
-export default Cart;
+export default withCart(Cart);
