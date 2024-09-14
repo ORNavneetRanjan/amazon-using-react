@@ -54,9 +54,11 @@ function ProductDisplay({ addToCart, updateCart, quantityMap }) {
         </Link>
         <div className="grow bg-white flex flex-col md:flex-row p-4 md:p-5 shadow-xl mx-4 md:mx-14 w-full max-w-4xl">
           <img
-            src={product.thumbnail}
+            src={
+              "https://images.pexels.com/photos/26935559/pexels-photo-26935559/free-photo-of-modern-camera-on-a-tripod-with-a-stabilizer.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+            }
             alt={product.title}
-            className="w-full md:w-1/2 object-cover"
+            className="w-full md:w-1/2 object-cover h-50 lg:h-96"
           />
 
           <div className="flex flex-col px-2 md:px-8 gap-2 md:gap-5 w-full md:w-1/2 mt-4 md:mt-0">
