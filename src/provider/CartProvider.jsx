@@ -9,6 +9,8 @@ function CartProvider({ isLoggedIn, children }) {
   const [isUpdated, setUpdate] = useState(false);
   const [quantityMap, setQuantityMap] = useState({});
 
+  console.log("cart is", cart);
+  console.log("quantity map is", quantityMap);
   useEffect(() => {
     if (!isLoggedIn) {
       const savedDataString = localStorage.getItem("my-cart") || "{}";
@@ -82,6 +84,7 @@ function CartProvider({ isLoggedIn, children }) {
     (id) => {
       const newQuantityMap = { ...quantityMap };
       delete newQuantityMap[id];
+      setQuantityMap(newQuantityMap);
       updateCart(newQuantityMap);
     },
     [quantityMap, updateCart]

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import ProductList from "./ProductList";
 import { getProductList } from "./app";
 import Loading from "./Loading";
-import NotFound from "./NotFound";
 import { GrLinkNext, GrLinkPrevious } from "react-icons/gr";
 import { Link, useSearchParams } from "react-router-dom";
 
@@ -53,10 +52,6 @@ function ItemsDisplay() {
     return <Loading />;
   }
 
-  if (!productList || productList.length === 0) {
-    return <NotFound />;
-  }
-
   const totalPages = meta.last_page;
 
   // Calculate the range of pages to display
@@ -101,7 +96,9 @@ function ItemsDisplay() {
         </div>
         {productList.length > 0 && <ProductList data={productList} />}
         {productList.length === 0 && (
-          <div className="text-xl lg:text-4xl">No product found</div>
+          <div className="text-xl lg:text-4xl text-blue-400">
+            No product found
+          </div>
         )}
       </div>
 
